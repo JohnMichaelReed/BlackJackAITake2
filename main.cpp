@@ -191,7 +191,7 @@ struct Analyzer : public ::BlackJackParticipant {
             }
         }
 
-        gains = numerator / ((double) (::shoe.size() + 1));
+        gains = numerator / ((double) (shoe.size() + 1));
         ::gains = 0.0;
         return gains;
     }
@@ -214,14 +214,14 @@ struct Analyzer : public ::BlackJackParticipant {
                         if (::simShoe.at(c) != 0) {
                             analyzer.simDrawCard(::simShoe, c);
                             ::gains = 0.0;
-                            gains += (analyzeStand(simDealer, analyzer) / (((::shoe.size() + 1) + 1.0)*((::shoe.size() + 1) + 2.0)));
+                            gains += (analyzeStand(simDealer, analyzer) / (((shoe.size() + 1) + 1.0)*((shoe.size() + 1) + 2.0)));
                             ::gains = 0.0;
                             analyzer.simUnDrawCard(::simShoe, c, analyzer.simHand);
                         }
                     }
                 } else if ((x >= y) || (simDealer.simScore >= 22)) {
                     ::gains = 0.0;
-                    gains += (analyzeStand(simDealer, analyzer) / ((::shoe.size() + 1) + 1.0));
+                    gains += (analyzeStand(simDealer, analyzer) / ((shoe.size() + 1) + 1.0));
                     ::gains = 0.0;
                 } else {
                     cout << "error x and y" << endl;
@@ -240,10 +240,10 @@ struct Analyzer : public ::BlackJackParticipant {
     double permute(int j) {
         double denominator = 1.0;
         while (j > 0) {
-            denominator = denominator * ((double) (((::shoe.size() + 1) + j)));
+            denominator = denominator * ((double) (((shoe.size() + 1) + j)));
             --j;
         }
-        double change = (((double) ::bet) / (denominator));
+        double change = (((double) bet) / (denominator));
         return change;
     }
 
@@ -441,8 +441,8 @@ int main() {
             }
         }
 
-        std::random_shuffle(::shoe.begin(), ::shoe.end(), ::myrandom);
-        std::random_shuffle(::shoe.begin(), ::shoe.end());
+        std::random_shuffle(shoe.begin(), shoe.end(), ::myrandom);
+        std::random_shuffle(shoe.begin(), shoe.end());
         simShoe.assign(&shoe[0], &shoe[0] + shoe.size());
 
         // Start a new_Hand after standing or busting.
@@ -486,21 +486,21 @@ newHand:
         }
 
         //Player draws the first two face up cards into real and virtual hands:
-        player.drawCard(::shoe);
-        player.simDrawCard(::simShoe, (int) ::shoe.size());
+        player.drawCard(shoe);
+        player.simDrawCard(::simShoe, (int) shoe.size());
 
-        player.drawCard(::shoe);
-        player.simDrawCard(::simShoe, (int) ::shoe.size());
+        player.drawCard(shoe);
+        player.simDrawCard(::simShoe, (int) shoe.size());
 
         // Dealer draws one face up card.
-        dealer.drawCard(::shoe);
-        dealer.simDrawCard(::simShoe, (int) ::shoe.size());
+        dealer.drawCard(shoe);
+        dealer.simDrawCard(::simShoe, (int) shoe.size());
 
-        holePosition = ::shoe.size() - 1;
+        holePosition = shoe.size() - 1;
 
         // The hole card does NOT got into the virtual hand. 
         //The simulator does not know the hole card.
-        dealer.drawCard(::shoe);
+        dealer.drawCard(shoe);
 
         hole = simShoe.at(holePosition);
 
@@ -525,7 +525,7 @@ newHand:
                 cout << tens << endl;
 
                 cout << "The number of unknown cards remaining is: " << endl;
-                cout << (::shoe.size() - 1) << endl;
+                cout << (shoe.size() - 1) << endl;
 
                 cout << "Press '4' to make a 2:1 insurance bet of half your origional bet.";
                 cout << "Press any other key to continue.";
@@ -625,7 +625,7 @@ decide:
 chooseAction:
 
         decideNewDeck = true;
-        if (::shoe.size() < 13) {
+        if (shoe.size() < 13) {
             cout << "The dealer reaches a cut card, then replaces and shuffles the near-empty deck " << endl;
             decideNewDeck = false;
             decideH17 = false;
@@ -641,8 +641,8 @@ chooseAction:
 
     if (g == '0') {
     } else if (g == '1') {
-        player.drawCard(::shoe);
-        player.simDrawCard(::simShoe, (int) ::shoe.size());
+        player.drawCard(shoe);
+        player.simDrawCard(::simShoe, (int) shoe.size());
 
         cout << "You drew a " << player.hand.back() << endl;
         if (player.score <= 21) {
@@ -669,8 +669,8 @@ chooseAction:
                 decideDoubleD = false;
             }
         }
-        player.drawCard(::shoe);
-        player.simDrawCard(::simShoe, (int) ::shoe.size());
+        player.drawCard(shoe);
+        player.simDrawCard(::simShoe, (int) shoe.size());
         cout << "You drew a " << player.hand.back() << endl;
     } else if (g == '3') {
 
@@ -695,8 +695,8 @@ chooseAction:
             ::bet = ::bet * 2;
             if (player.hand.at(0) == 11) {
                 cout << "You only get one hit on a split ace.";
-                player.drawCard(::shoe);
-                player.simDrawCard(::simShoe, (int) ::shoe.size());
+                player.drawCard(shoe);
+                player.simDrawCard(::simShoe, (int) shoe.size());
                 cout << "You drew a " << player.hand.back() << endl;
             } else {
                 cout << "And then you play as usual." << endl;
@@ -736,16 +736,16 @@ chooseAction:
         // Dealer hits on 16 or below
         if (dealer.score <= 16) {
             // The dealer must draw go into the next level of simulation and draw another card.
-            dealer.drawCard(::shoe);
-            dealer.simDrawCard(::simShoe, (int) ::shoe.size());
+            dealer.drawCard(shoe);
+            dealer.simDrawCard(::simShoe, (int) shoe.size());
             recalculate = true;
         }
 
             // Dealer hits on a soft 17 (6, 11)
         else if ((dealer.score == 17) && (::H17 == true) && (dealer.simNumAces > 0)) {
             // The dealer must draw go into the next level of simulation and draw another card.
-            dealer.drawCard(::shoe);
-            dealer.simDrawCard(::simShoe, (int) ::shoe.size());
+            dealer.drawCard(shoe);
+            dealer.simDrawCard(::simShoe, (int) shoe.size());
             recalculate = true;
 
         }
